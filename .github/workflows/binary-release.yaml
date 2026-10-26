@@ -16,7 +16,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   debug:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     steps:
       - name: print github context
         env:
@@ -27,7 +27,7 @@ jobs:
   release-binaries:
     # was using github.ref.tag_name, but it seems that when publishing multiple tags at once, it was behaving weirdly
     if: github.event_name == 'workflow_dispatch' || startsWith(github.ref_name, 'varlock@')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     steps:
       - uses: actions/checkout@v6
       - name: Setup Bun
@@ -100,7 +100,7 @@ jobs:
   release-docker:
     needs: release-binaries
     if: github.event_name == 'workflow_dispatch' || startsWith(github.ref_name, 'varlock@')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     permissions:
       contents: read
       packages: write
